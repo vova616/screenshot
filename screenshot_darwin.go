@@ -31,7 +31,7 @@ func CaptureRect(rect image.Rectangle) (*image.RGBA, func(), error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	noError := true
+	noError := false
 	defer func() {
 		if !noError {
 			c.Close()
@@ -40,7 +40,7 @@ func CaptureRect(rect image.Rectangle) (*image.RGBA, func(), error) {
 
 	x, y := rect.Dx(), rect.Dy()
 
-	xImg, err := c.GetImage(xgb.ImageFormatZPixmap, c.DefaultScreen().Root, 0, 0, uint16(x), uint16(y), 0xffffffff)
+	xImg, err := c.GetImage(xgb.ImageFormatZPixmap, c.DefaultScreen().Root, uint16(rect.Min.X), uint16(rect.Min.Y), uint16(x), uint16(y), 0xffffffff)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -52,5 +52,6 @@ func CaptureRect(rect image.Rectangle) (*image.RGBA, func(), error) {
 	}
 
 	img := &image.RGBA{data, 4 * x, image.Rect(0, 0, x, y)}
+	noError = true
 	return img, func() { c.Close() }, nil
 }
