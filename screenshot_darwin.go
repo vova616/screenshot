@@ -40,7 +40,7 @@ func CaptureRect(rect image.Rectangle) (*image.RGBA, func(), error) {
 
 	x, y := rect.Dx(), rect.Dy()
 
-	xImg, err := c.GetImage(xgb.ImageFormatZPixmap, c.DefaultScreen().Root, uint16(rect.Min.X), uint16(rect.Min.Y), uint16(x), uint16(y), 0xffffffff)
+	xImg, err := c.GetImage(xgb.ImageFormatZPixmap, c.DefaultScreen().Root, int16(rect.Min.X), int16(rect.Min.Y), uint16(x), uint16(y), 0xffffffff)
 	if err != nil {
 		return nil, nil, err
 	}
