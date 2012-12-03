@@ -7,11 +7,10 @@ import (
 )
 
 func main() {
-	img, closer, err := screenshot.CaptureScreen()
+	img, err := screenshot.CaptureScreen()
 	if err != nil {
 		panic(err)
 	}
-	defer closer()
 	f, e := os.Create("./ss.png")
 	if e != nil {
 		panic(e)
