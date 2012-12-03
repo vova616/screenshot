@@ -9,4 +9,4 @@ Windows: https://github.com/AllenDang/w32
 Other: http://code.google.com/p/x-go-binding
 
 ## Examples:
-look at example/ folder, dont forget to defer closer() to clean memory :]
+look at example/ folder.
