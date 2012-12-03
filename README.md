@@ -5,6 +5,7 @@ go get github.com\vova616\screenshot
 
 ## Dependencies:
 Windows: https://github.com/AllenDang/w32
+
 Other: http://code.google.com/p/x-go-binding
 
 ## Examples:
