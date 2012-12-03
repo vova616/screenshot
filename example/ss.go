@@ -11,10 +11,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	f, e := os.Create("./ss.png")
-	if e != nil {
-		panic(e)
+	f, err := os.Create("./ss.png")
+	if err != nil {
+		panic(err)
 	}
-	png.Encode(f, img)
+	err = png.Encode(f, img)
+	if err != nil {
+		panic(err)
+	}
 	f.Close()
 }
