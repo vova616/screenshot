@@ -1,19 +1,22 @@
 package screenshot
 
 import (
-	"code.google.com/p/x-go-binding/xgb"
 	"image"
-	"os"
+
+	"github.com/BurntSushi/xgb"
+	"github.com/BurntSushi/xgb/xproto"
 )
 
 func ScreenRect() (image.Rectangle, error) {
-	c, err := xgb.Dial(os.Getenv("DISPLAY"))
+	c, err := xgb.NewConn()
 	if err != nil {
 		return image.Rectangle{}, err
 	}
 	defer c.Close()
-	x := c.DefaultScreen().WidthInPixels
-	y := c.DefaultScreen().HeightInPixels
+
+	screen := xproto.Setup(c).DefaultScreen(c)
+	x := screen.WidthInPixels
+	y := screen.HeightInPixels
 
 	return image.Rect(0, 0, int(x), int(y)), nil
 }
@@ -27,14 +30,15 @@ func CaptureScreen() (*image.RGBA, error) {
 }
 
 func CaptureRect(rect image.Rectangle) (*image.RGBA, error) {
-	c, err := xgb.Dial(os.Getenv("DISPLAY"))
+	c, err := xgb.NewConn()
 	if err != nil {
 		return nil, err
 	}
 	defer c.Close()
 
+	screen := xproto.Setup(c).DefaultScreen(c)
 	x, y := rect.Dx(), rect.Dy()
-	xImg, err := c.GetImage(xgb.ImageFormatZPixmap, c.DefaultScreen().Root, int16(rect.Min.X), int16(rect.Min.Y), uint16(x), uint16(y), 0xffffffff)
+	xImg, err := xproto.GetImage(c, xproto.ImageFormatZPixmap, xproto.Drawable(screen.Root), int16(rect.Min.X), int16(rect.Min.Y), uint16(x), uint16(y), 0xffffffff).Reply()
 	if err != nil {
 		return nil, err
 	}
