@@ -2,7 +2,7 @@ Simple cross-platform pure Go screen shot library. (tested only on linux&windows
 
 
 ## Install:
-go get github.com\vova616\screenshot
+go get github.com/vova616/screenshot
 
 ## Dependencies:
 Windows: https://github.com/AllenDang/w32
