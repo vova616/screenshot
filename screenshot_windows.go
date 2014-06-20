@@ -43,9 +43,9 @@ func CaptureRect(rect image.Rectangle) (*image.RGBA, error) {
 	x, y := rect.Dx(), rect.Dy()
 
 	bt := w32.BITMAPINFO{}
-	bt.BmiHeader.BiSize = uint(reflect.TypeOf(bt.BmiHeader).Size())
-	bt.BmiHeader.BiWidth = x
-	bt.BmiHeader.BiHeight = -y
+	bt.BmiHeader.BiSize = uint32(reflect.TypeOf(bt.BmiHeader).Size())
+	bt.BmiHeader.BiWidth = int32(x)
+	bt.BmiHeader.BiHeight = int32(-y)
 	bt.BmiHeader.BiPlanes = 1
 	bt.BmiHeader.BiBitCount = 32
 	bt.BmiHeader.BiCompression = w32.BI_RGB
