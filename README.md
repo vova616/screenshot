@@ -1,13 +1,14 @@
-Simple cross-platform pure Go screen shot library. (tested only on linux&windows, mac is currently not working)
-
+Simple cross-platform pure Go screen shot library. (tested on linux&windows&osx)
 
 ## Install:
 go get github.com/vova616/screenshot
 
 ## Dependencies:
-Windows: https://github.com/AllenDang/w32
+Windows: None
 <br/>
-Other: https://github.com/BurntSushi/xgb
+Linux/FreeBSD: https://github.com/BurntSushi/xgb
+<br/>
+OSX: cgo (CoreGraphics,CoreFoundation, that should not be a problem)
 
 ## Examples:
 look at example/ folder.
