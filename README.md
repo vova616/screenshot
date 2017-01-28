@@ -12,7 +12,7 @@ go get github.com/vova616/screenshot
 
 ## Dependencies
 * **Windows** - None
-* **Linux/FreeBSD - https://github.com/BurntSushi/xgb
+* **Linux/FreeBSD** - https://github.com/BurntSushi/xgb
 * **OSX** - cgo (CoreGraphics,CoreFoundation, that should not be a problem)
 
 <br/>
