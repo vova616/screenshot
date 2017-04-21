@@ -46,7 +46,7 @@ func CaptureRect(rect image.Rectangle) (*image.RGBA, error) {
 		imageBytes[i], imageBytes[i+2], imageBytes[i+1], imageBytes[i+3] = slice[i+2], slice[i], slice[i+1], slice[i+3]
 	}
 
-	C.CFRelease(rawData)
+	C.CFRelease(C.CFTypeRef(rawData))
 
 	img := &image.RGBA{Pix: imageBytes, Stride: 4 * width, Rect: rect}
 	return img, nil
