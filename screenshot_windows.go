@@ -70,8 +70,9 @@ func CaptureRect(rect image.Rectangle) (*image.RGBA, error) {
 	}
 	defer DeleteObject(obj)
 
-	//Note:BitBlt contains bad error handling, we will just assume it works and if it doesn't it will panic :x
-	BitBlt(m_hDC, 0, 0, x, y, hDC, rect.Min.X, rect.Min.Y, SRCCOPY)
+	if !BitBlt(m_hDC, 0, 0, x, y, hDC, rect.Min.X, rect.Min.Y, SRCCOPY) {
+		return nil, fmt.Errorf("BitBlt failed err:%d.\n", GetLastError())
+	}
 
 	var slice []byte
 	hdrp := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
@@ -124,7 +125,7 @@ func GetLastError() uint32 {
 	return uint32(ret)
 }
 
-func BitBlt(hdcDest HDC, nXDest, nYDest, nWidth, nHeight int, hdcSrc HDC, nXSrc, nYSrc int, dwRop uint) {
+func BitBlt(hdcDest HDC, nXDest, nYDest, nWidth, nHeight int, hdcSrc HDC, nXSrc, nYSrc int, dwRop uint) bool {
 	ret, _, _ := procBitBlt.Call(
 		uintptr(hdcDest),
 		uintptr(nXDest),
@@ -136,9 +137,7 @@ func BitBlt(hdcDest HDC, nXDest, nYDest, nWidth, nHeight int, hdcSrc HDC, nXSrc,
 		uintptr(nYSrc),
 		uintptr(dwRop))
 
-	if ret == 0 {
-		panic("BitBlt failed")
-	}
+	return ret != 0
 }
 
 func SelectObject(hdc HDC, hgdiobj HGDIOBJ) HGDIOBJ {
