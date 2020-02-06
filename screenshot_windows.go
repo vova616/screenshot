@@ -14,8 +14,12 @@ func ScreenRect() (image.Rectangle, error) {
 		return image.Rectangle{}, fmt.Errorf("Could not Get primary display err:%d\n", GetLastError())
 	}
 	defer ReleaseDC(0, hDC)
-	x := GetDeviceCaps(hDC, HORZRES)
-	y := GetDeviceCaps(hDC, VERTRES)
+	
+	hTopWindow, _, _ := procGetDesktopWindow.Call()
+	topWindowDpi, _, _ := procGetDpiForWindow.Call(hTopWindow)
+	sysDpi, _, _ := procGetDpiForSystem.Call()
+	x := GetDeviceCaps(hDC, HORZRES) * int(topWindowDpi) / int(sysDpi)
+	y := GetDeviceCaps(hDC, VERTRES) * int(topWindowDpi) / int(sysDpi)
 	return image.Rect(0, 0, x, y), nil
 }
 
@@ -230,6 +234,9 @@ var (
 	moduser32              = syscall.NewLazyDLL("user32.dll")
 	modkernel32            = syscall.NewLazyDLL("kernel32.dll")
 	procGetDC              = moduser32.NewProc("GetDC")
+	procGetDesktopWindow   = moduser32.NewProc("GetDesktopWindow")
+	procGetDpiForSystem    = moduser32.NewProc("GetDpiForSystem")
+	procGetDpiForWindow    = moduser32.NewProc("GetDpiForWindow")
 	procReleaseDC          = moduser32.NewProc("ReleaseDC")
 	procDeleteDC           = modgdi32.NewProc("DeleteDC")
 	procBitBlt             = modgdi32.NewProc("BitBlt")
