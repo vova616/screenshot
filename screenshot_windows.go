@@ -14,8 +14,8 @@ func ScreenRect() (image.Rectangle, error) {
 		return image.Rectangle{}, fmt.Errorf("Could not Get primary display err:%d\n", GetLastError())
 	}
 	defer ReleaseDC(0, hDC)
-	x := GetDeviceCaps(hDC, HORZRES)
-	y := GetDeviceCaps(hDC, VERTRES)
+	x := GetDeviceCaps(hDC, DESKTOPHORZRES)
+	y := GetDeviceCaps(hDC, DESKTOPVERTRES)
 	return image.Rect(0, 0, x, y), nil
 }
 
@@ -219,6 +219,8 @@ type RGBQUAD struct {
 const (
 	HORZRES          = 8
 	VERTRES          = 10
+	DESKTOPHORZRES   = 118
+	DESKTOPVERTRES   = 117
 	BI_RGB           = 0
 	InvalidParameter = 2
 	DIB_RGB_COLORS   = 0
